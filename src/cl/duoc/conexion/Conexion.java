@@ -14,7 +14,7 @@ public class Conexion {
     private final String USER = "root";
     private final String PASSWORD = "";
     private final String SERVER = "localhost:3306";
-    private final String BBDD = "Distribuidora_Bicicleta_007D";
+    private final String BBDD = "distribuidora_bicicleta_007d";
     
     
     private Conexion(){
