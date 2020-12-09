@@ -148,6 +148,11 @@ public class Menu extends javax.swing.JFrame {
         Frame_IniciarSesion.getContentPane().add(jLabelIniciarSesionPassword);
         jLabelIniciarSesionPassword.setBounds(20, 90, 110, 40);
 
+        jTextFieldIniciarSesionUsuario.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTextFieldIniciarSesionUsuarioFocusGained(evt);
+            }
+        });
         jTextFieldIniciarSesionUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldIniciarSesionUsuarioActionPerformed(evt);
@@ -166,6 +171,11 @@ public class Menu extends javax.swing.JFrame {
         jButtonIniciarSesionLogin.setBounds(100, 160, 110, 50);
 
         jPasswordFieldIniciarSesionPassword.setEchoChar('\u25cf');
+        jPasswordFieldIniciarSesionPassword.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jPasswordFieldIniciarSesionPasswordFocusGained(evt);
+            }
+        });
         jPasswordFieldIniciarSesionPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jPasswordFieldIniciarSesionPasswordActionPerformed(evt);
@@ -471,7 +481,7 @@ public class Menu extends javax.swing.JFrame {
                         .addGroup(Frame_ListarCategoriasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButtonAgregarCategoría, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButtonModificarCategoría, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE)
                         .addGroup(Frame_ListarCategoriasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButtonLimpiarCategoría, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButtonEliminarCategoría, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -507,7 +517,7 @@ public class Menu extends javax.swing.JFrame {
         );
 
         getContentPane().add(Frame_ListarCategorias);
-        Frame_ListarCategorias.setBounds(20, 340, 320, 330);
+        Frame_ListarCategorias.setBounds(20, 340, 365, 330);
 
         MENU_PERFIL.setText("Perfil");
         MENU_PERFIL.addActionListener(new java.awt.event.ActionListener() {
@@ -717,6 +727,16 @@ public class Menu extends javax.swing.JFrame {
     private void jPasswordFieldIniciarSesionPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordFieldIniciarSesionPasswordActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jPasswordFieldIniciarSesionPasswordActionPerformed
+
+    private void jTextFieldIniciarSesionUsuarioFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextFieldIniciarSesionUsuarioFocusGained
+        // TODO add your handling code here:
+        this.jTextFieldIniciarSesionUsuario.selectAll();
+    }//GEN-LAST:event_jTextFieldIniciarSesionUsuarioFocusGained
+
+    private void jPasswordFieldIniciarSesionPasswordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jPasswordFieldIniciarSesionPasswordFocusGained
+        // TODO add your handling code here:
+        this.jPasswordFieldIniciarSesionPassword.selectAll();
+    }//GEN-LAST:event_jPasswordFieldIniciarSesionPasswordFocusGained
     
     private void inicioApp(){
         this.setExtendedState(MAXIMIZED_BOTH);
@@ -748,21 +768,34 @@ public class Menu extends javax.swing.JFrame {
      *******************************************************/
     
     private void validarLogin(){
+        String roles[] = {"Administrador", "Usuario"};
         String username = this.jTextFieldIniciarSesionUsuario.getText();
         String password = String.valueOf(this.jPasswordFieldIniciarSesionPassword.getPassword());
         Usuario u = cu.read(username);
         if(u != null){
             if(u.getUsuario().equals(username) && u.getPassword().equals(password)){
-                JOptionPane.showMessageDialog(this, "Login Existoso! Bienvenido " + username, "Mensajes", JOptionPane.INFORMATION_MESSAGE);
+                int privilegio = u.getPrivilegio();
+                JOptionPane.showMessageDialog(this, "Login Existoso! Bienvenido " + username + ".\n" + "Usted tiene rol de tipo: " + roles[privilegio], "Mensajes", JOptionPane.INFORMATION_MESSAGE);
+                this.Frame_IniciarSesion.setVisible(false);
                 
             }else{
-                    JOptionPane.showMessageDialog(this, "Acceso denegado!", "Mensajes", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Acceso denegado!\n Usuario y/o contraseña invalidos.", "Mensajes", JOptionPane.ERROR_MESSAGE);
+                    this.jTextFieldIniciarSesionUsuario.requestFocus();
+                    
                 }
             /////////////////////////////////////////////////////////////////////////////////////////
         }else{
-            JOptionPane.showMessageDialog(this, "Acceso denegado!", "Mensajes", JOptionPane.ERROR_MESSAGE);
-            
+            JOptionPane.showMessageDialog(this, "Acceso denegado!\n Usuario no registrado.", "Mensajes", JOptionPane.ERROR_MESSAGE);
+            this.jTextFieldIniciarSesionUsuario.requestFocus();
         }
+    }
+    
+    private void admin(){
+        
+    }
+    
+    private void user(){
+        
     }
     
     /*******************************************************
